@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Editor</title>
+
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      .formEditorContainer {
+        padding: 10px;
+        width: 94%;
+        max-width: 700px;
+        margin: 10px auto;
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+      .editorHeader {
+        width: 100%;
+        padding: 8px 2px;
+      }
+      .editorHeader h1 {
+        margin: 0;
+        padding: 0;
+      }
+      .formEditor {
+        width: 100%;
+        padding: 2px;
+      }
+      .elementWrapper {
+        margin: 5px 0;
+        padding: 11px 9px;
+        width: 96%;
+        box-shadow: 0 0 5px #c6c6c6eb;
+        border-radius: 8px;
+        transition-duration: 300ms;
+      }
+      .editorElement {
+        display: grid;
+        grid-template-columns: auto auto;
+        row-gap: 5px;
+        column-gap: 4%;
+      }
+      .editorElement div.feildProperty {
+        width: 100%;
+      }
+      .editorElement div input {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .editorElement div select {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .elementButtonContainer{
+        width: 100%;
+        margin: 10px 0 0 0;
+      }
+      .elementButtonContainer button , button.saveButton{
+        border: 1px solid rgb(0, 22, 220);
+        border-radius: 5px;
+        outline: none;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+      }
+      
+      .elementButtonContainer button.Delete{
+        padding: 3px 17px;    
+        background-color: red;    
+      }
+      .elementButtonContainer button.Duplicate{
+        padding: 3px 7px;        
+      }
+      .addButton{
+        cursor: pointer;
+      }
+      button.saveButton{
+        padding: 3px 7px;
+        transition: 300ms;
+      }
+      button.saveButton:hover{
+        transform: scaleX(1.08);
+      }
+      .saveContainer{
+        width: 100%;
+        text-align: center;
+      }
+      .shrinkEffect{
+        transform: scaleY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="formEditorContainer">
+      <div class="editorHeader">
+        <h2>Form Name</h2>
+      </div>
+      <div class="customCSS"></div>
+      <div class="formEditor">
+        <div class="elementWrapper">
+          <div class="editorElement">
+            <div class="feildProperty">
+              <input type="text" placeholder="Name" />
+            </div>
+            <div class="feildProperty">
+              <select class="feildType">
+                <option value="placeholder">Feild Type (Text)</option>
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="email">Email</option>
+                <option value="textarea">Textarea</option>
+                <option value="url">URL</option>
+                <option value="radio">Radio Buttons</option>
+                <option value="checkbox">Checkbox</option>
+                <option value="dropdown">Dropdown</option>
+              </select>
+            </div>
+            <div class="feildProperty">
+              <input type="text" class="classList" placeholder="Class List" />
+            </div>
+            <div class="feildProperty">
+              <input type="text" class="fieldID" placeholder="Feild ID" />
+            </div>
+          </div>
+          <div class="elementButtonContainer">
+            <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
+            <button class="Delete" onclick="deleteElement(this)">Delete</button>
+          </div>
+        </div>
+      </div>
+      <img src="add-icon.png" alt="add" width="35" class="addButton" onclick="addElement()">
+      <div class="saveContainer">
+        <button class="saveButton">Save</button>
+      </div>
+    </section>
+    <script async>
+        function deleteElement(self){
+            if (confirm('The form element will be deleted')){
+              self.parentElement.parentElement.remove();
+            }
+            
+        }
+        function duplicateElement(self){
+            var selfElement = self.parentElement.parentElement
+            var clone = selfElement.cloneNode(true);
+            clone.style.transform = 'scaleY(0)';
+            clone.style.opacity = '0';
+            clone.querySelector('.fieldID').value='';
+            document.querySelector('.formEditor').insertBefore(clone,selfElement);
+            setTimeout(()=>{
+              clone.style = '';
+            },1);
+        }
+        function addElement(){
+            let newElement = document.createElement('div');
+            newElement.classList.add('elementWrapper');
+            newElement.style.transform = 'scaleY(0)';
+            newElement.style.opacity = '0';
+            newElement.innerHTML = `
+          <div class="editorElement">
+            <div class="feildProperty">
+              <input type="text" placeholder="Name" />
+            </div>
+            <div class="feildProperty">
+              <select>
+                <option value="placeholder">Feild Type</option>
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="email">Email</option>
+                <option value="textarea">Textarea</option>
+                <option value="url">Url</option>
+              </select>
+            </div>
+            <div class="feildProperty">
+              <input type="text" class="classList" placeholder="Class List" />
+            </div>
+            <div class="feildProperty">
+              <input type="text" class="fieldID" placeholder="Feild ID" />
+            </div>
+          </div>
+          <div class="elementButtonContainer">
+            <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
+            <button class="Delete" onclick="deleteElement(this)">Delete</button>
+          </div>
+            `;
+            
+            document.querySelector('.formEditor').appendChild(newElement);
+            setTimeout(()=>{
+              newElement.style = '';
+            },1);
+        }
+    </script>
+</body>
+</html>
