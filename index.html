@@ -1,201 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Form Editor</title>
 
-    <style>
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      .formEditorContainer {
-        padding: 10px;
-        width: 94%;
-        max-width: 700px;
-        margin: 10px auto;
-        border: 1px solid black;
-        border-radius: 5px;
-      }
-      .editorHeader {
-        width: 100%;
-        padding: 8px 2px;
-      }
-      .editorHeader h1 {
-        margin: 0;
-        padding: 0;
-      }
-      .formEditor {
-        width: 100%;
-        padding: 2px;
-      }
-      .elementWrapper {
-        margin: 5px 0;
-        padding: 11px 9px;
-        width: 96%;
-        box-shadow: 0 0 5px #c6c6c6eb;
-        border-radius: 8px;
-        transition-duration: 300ms;
-      }
-      .editorElement {
-        display: grid;
-        grid-template-columns: auto auto;
-        row-gap: 5px;
-        column-gap: 4%;
-      }
-      .editorElement div.feildProperty {
-        width: 100%;
-      }
-      .editorElement div input {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-      }
-      .editorElement div select {
-        width: 100%;
-        padding: 0;
-        margin: 0;
-      }
-      .elementButtonContainer{
-        width: 100%;
-        margin: 10px 0 0 0;
-      }
-      .elementButtonContainer button , button.saveButton{
-        border: 1px solid rgb(0, 22, 220);
-        border-radius: 5px;
-        outline: none;
-        background-color: black;
-        color: white;
-        cursor: pointer;
-      }
-      
-      .elementButtonContainer button.Delete{
-        padding: 3px 17px;    
-        background-color: red;    
-      }
-      .elementButtonContainer button.Duplicate{
-        padding: 3px 7px;        
-      }
-      .addButton{
-        cursor: pointer;
-      }
-      button.saveButton{
-        padding: 3px 7px;
-        transition: 300ms;
-      }
-      button.saveButton:hover{
-        transform: scaleX(1.08);
-      }
-      .saveContainer{
-        width: 100%;
-        text-align: center;
-      }
-      .shrinkEffect{
-        transform: scaleY(0);
-      }
-    </style>
-  </head>
-  <body>
-    <section class="formEditorContainer">
-      <div class="editorHeader">
-        <h2>Form Name</h2>
-      </div>
-      <div class="customCSS"></div>
-      <div class="formEditor">
-        <div class="elementWrapper">
-          <div class="editorElement">
-            <div class="feildProperty">
-              <input type="text" placeholder="Name" />
-            </div>
-            <div class="feildProperty">
-              <select class="feildType">
-                <option value="placeholder">Feild Type (Text)</option>
-                <option value="text">Text</option>
-                <option value="number">Number</option>
-                <option value="email">Email</option>
-                <option value="textarea">Textarea</option>
-                <option value="url">URL</option>
-                <option value="radio">Radio Buttons</option>
-                <option value="checkbox">Checkbox</option>
-                <option value="dropdown">Dropdown</option>
-              </select>
-            </div>
-            <div class="feildProperty">
-              <input type="text" class="classList" placeholder="Class List" />
-            </div>
-            <div class="feildProperty">
-              <input type="text" class="fieldID" placeholder="Feild ID" />
-            </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Editor</title>
+
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    .formEditorContainer {
+      padding: 10px;
+      width: 94%;
+      max-width: 700px;
+      margin: 10px auto;
+      border: 1px solid black;
+      border-radius: 5px;
+    }
+
+    .editorHeader {
+      width: 100%;
+      padding: 8px 2px;
+    }
+
+    .editorHeader h1 {
+      margin: 0;
+      padding: 0;
+    }
+
+    .formEditor {
+      width: 100%;
+      padding: 2px;
+    }
+
+    .elementWrapper {
+      margin: 5px 0;
+      padding: 11px 9px;
+      width: 96%;
+      box-shadow: 0 0 5px #c6c6c6eb;
+      border-radius: 8px;
+      transition-duration: 300ms;
+    }
+
+    .editorElement {
+      display: grid;
+      grid-template-columns: auto auto;
+      row-gap: 5px;
+      column-gap: 4%;
+    }
+
+    .editorElement div.fieldProperty {
+      width: 100%;
+    }
+
+    .editorElement div input {
+      width: 99%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .editorElement div select {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .elementButtonContainer {
+      width: 100%;
+      margin: 10px 0 0 0;
+      align-items: center;
+    }
+
+    .elementButtonContainer button,
+    button.saveButton {
+      border: 1px solid rgb(0, 22, 220);
+      border-radius: 5px;
+      outline: none;
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
+
+    .elementButtonContainer button.Delete {
+      padding: 3px 17px;
+      background-color: red;
+    }
+
+    .elementButtonContainer button.Duplicate {
+      padding: 3px 7px;
+    }
+
+    .addButton {
+      cursor: pointer;
+    }
+
+    button.saveButton {
+      padding: 3px 7px;
+      transition: 300ms;
+    }
+
+    button.saveButton:hover {
+      transform: scaleX(1.08);
+    }
+
+    .saveContainer {
+      width: 100%;
+      text-align: center;
+    }
+
+    button.blackButton {
+      border: 1px solid rgb(0, 22, 220);
+      border-radius: 5px;
+      outline: none;
+      background-color: rgb(112, 112, 112);
+      color: white;
+      cursor: pointer;
+      padding: 3px 7px;
+    }
+
+    button.redButton {
+      border: 1px solid rgb(0, 22, 220);
+      border-radius: 5px;
+      outline: none;
+      background-color: red;
+      color: white;
+      cursor: pointer;
+      padding: 3px 7px;
+    }
+
+    .optionListContainer {
+      width: fit-content;
+      border: 2px solid black;
+      border-radius: 5px;
+      padding: 5px;
+      margin-top: 18px;
+    }
+
+    .optionListContainer p {
+      margin: 0;
+      font-family: sans-serif;
+      font-size: 13px;
+    }
+
+    .optionListContainer .optionListItem {
+      min-width: 225px;
+    }
+
+    .optionListItems div {
+      margin: 5px 0;
+    }
+
+    .fieldTypePlaceholder {
+      color: #777;
+    }
+
+    .requiredCheckbox{
+      display: inline;
+      font-family: sans-serif;
+      font-size: 13px;
+      padding: 3px 7px;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #eeeeee;
+    }
+    .requiredCheckbox .checkboxBlock{
+      display: inline;
+    }
+    .requiredCheckbox svg{
+      opacity: 0;
+      width: 0;
+      transform: scaleX(0) rotate(90deg);
+      transition: 300ms;
+    }
+    
+
+    .requiredCheckbox svg[checked]{
+      width: 10px;
+      opacity: 1;
+      transform: scaleX(1) rotate(0);
+    }
+
+
+    
+  </style>
+</head>
+
+<body>
+  <section class="formEditorContainer">
+    <div class="editorHeader">
+      <h2>Form Name</h2>
+    </div>
+    <div class="customCSS"></div>
+    <div class="formEditor">
+      <div class="elementWrapper">
+        <div class="editorElement">
+          <div class="fieldProperty">
+            <select class="fieldType" onclick="selectType(this)">
+              <option value="placeholder" class="fieldTypePlaceholder">Feild Type*</option>
+              <option value="text">Text</option>
+              <option value="number">Number</option>
+              <option value="email">Email</option>
+              <option value="textarea">Textarea</option>
+              <option value="url">URL</option>
+              <option value="radio">Radio Buttons</option>
+              <option value="checkbox">Checkbox</option>
+              <option value="dropdown">Dropdown</option>
+            </select>
           </div>
-          <div class="elementButtonContainer">
-            <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
-            <button class="Delete" onclick="deleteElement(this)">Delete</button>
+          <div class="fieldProperty">
+            <input type="text" placeholder="Name*" class="fieldName" />
+          </div>
+          <div class="fieldProperty">
+            <input type="text" placeholder="Label" class="fieldLabel">
+          </div>
+          <div class="fieldProperty">
+            <input type="text" class="fieldClassList" placeholder="Class List" />
+          </div>
+          <div class="fieldProperty">
+            <input type="text" class="fieldID" placeholder="Feild ID" />
+          </div>
+          <div class="fieldProperty placeholderInput" style="display: none;">
+            <input type="text" placeholder="Placeholder" class="fieldPlaceholder">
           </div>
         </div>
-      </div>
-      <img src="add-icon.png" alt="add" width="35" class="addButton" onclick="addElement()">
-      <div class="saveContainer">
-        <button class="saveButton">Save</button>
-      </div>
-    </section>
-    <script async>
-        function deleteElement(self){
-            if (confirm('The form element will be deleted')){
-              self.parentElement.parentElement.remove();
-            }
-            
-        }
-        function duplicateElement(self){
-            var selfElement = self.parentElement.parentElement
-            var clone = selfElement.cloneNode(true);
-            clone.style.transform = 'scaleY(0)';
-            clone.style.opacity = '0';
-            clone.querySelector('.fieldID').value='';
-            document.querySelector('.formEditor').insertBefore(clone,selfElement);
-            setTimeout(()=>{
-              clone.style = '';
-            },1);
-        }
-        function addElement(){
-            let newElement = document.createElement('div');
-            newElement.classList.add('elementWrapper');
-            newElement.style.transform = 'scaleY(0)';
-            newElement.style.opacity = '0';
-            newElement.innerHTML = `
-          <div class="editorElement">
-            <div class="feildProperty">
-              <input type="text" placeholder="Name" />
-            </div>
-            <div class="feildProperty">
-              <select>
-                <option value="placeholder">Feild Type</option>
-                <option value="text">Text</option>
-                <option value="number">Number</option>
-                <option value="email">Email</option>
-                <option value="textarea">Textarea</option>
-                <option value="url">Url</option>
-              </select>
-            </div>
-            <div class="feildProperty">
-              <input type="text" class="classList" placeholder="Class List" />
-            </div>
-            <div class="feildProperty">
-              <input type="text" class="fieldID" placeholder="Feild ID" />
-            </div>
+        <div class="optionListContainer" style="display: none;">
+          <div class="optionListItems">
+            <p>Option List</p>
+            <div><input type="text" class="optionListItem"> <button class="deleteOptionListItem redButton"
+                onclick="deleteOptionListItem(this)">Delete</button> </div>
           </div>
-          <div class="elementButtonContainer">
-            <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
-            <button class="Delete" onclick="deleteElement(this)">Delete</button>
-          </div>
-            `;
-            
-            document.querySelector('.formEditor').appendChild(newElement);
-            setTimeout(()=>{
-              newElement.style = '';
-            },1);
+          <button class="addOptionListItem blackButton" onclick="addOptionListItem(this)">Add</button>
+        </div>
+        <div class="elementButtonContainer">
+          <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
+          <button class="Delete" onclick="deleteElement(this)">Delete</button>
+          <button class="requiredCheckbox" onclick="requiredCheck(this)">Required
+            <div class="checkboxBlock" >
+              <svg fill="#1199ff"  version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="9" height="9" viewBox="0 0 78.369 78.369" xml:space="preserve" stroke="#000000" stroke-width="1.175535"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="3.291498"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704 c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704 C78.477,17.894,78.477,18.586,78.049,19.015z"></path> </g> </g></svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <img src="add-icon.png" alt="add" width="35" class="addButton" onclick="addElement()">
+    <div class="saveContainer">
+      <button class="saveButton" onclick="saveForm()">Save</button>
+    </div>
+  </section>
+  <script async>
+    var formElementHTML = document.querySelector('.elementWrapper').innerHTML;
+    function deleteElement(self) {
+      if (confirm('The form element will be deleted')) {
+        self.parentElement.parentElement.remove();
+      }
+    }
+    function duplicateElement(self) {
+      let selfElement = self.parentElement.parentElement;
+      let clone = selfElement.cloneNode(true);
+      clone.style.transform = 'scaleY(0)';
+      clone.style.opacity = '0';
+      clone.querySelector('.fieldID').value = '';
+      document.querySelector('.formEditor').insertBefore(clone, selfElement);
+      setTimeout(() => {
+        clone.style = '';
+      }, 1);
+      clone.querySelector('.fieldType').selectedIndex= selfElement.querySelector('.fieldType').options.selectedIndex;
+    }
+    function selectType(self) {
+      let types = self.options;
+      let sIndex = types.selectedIndex
+      if (sIndex == 6 || sIndex == 7 || sIndex == 8) {
+        self.parentElement.parentElement.parentElement.querySelector('.optionListContainer').style.display = 'block';
+        self.parentElement.parentElement.parentElement.querySelector('.placeholderInput').style.display = 'none';
+      }
+      else if (sIndex == 1 || sIndex == 2 || sIndex == 3 || sIndex == 4 || sIndex == 5) {
+        self.parentElement.parentElement.parentElement.querySelector('.optionListContainer').style.display = 'none';
+        self.parentElement.parentElement.parentElement.querySelector('.placeholderInput').style.display = 'block';
+      }
+      else {
+        self.parentElement.parentElement.parentElement.querySelector('.optionListContainer').style.display = 'none';
+        self.parentElement.parentElement.parentElement.querySelector('.placeholderInput').style.display = 'none';
+      }
+    }
+    function addElement() {
+      let newElement = document.createElement('div');
+      newElement.classList.add('elementWrapper');
+      newElement.style.transform = 'scaleY(0)';
+      newElement.style.opacity = '0';
+      newElement.innerHTML = formElementHTML;
+      document.querySelector('.formEditor').appendChild(newElement);
+      setTimeout(() => {
+        newElement.style = '';
+      }, 1);
+    }
+    function deleteOptionListItem(self) {
+      if (self.parentElement.parentElement.querySelectorAll('input').length > 1) {
+        if (confirm('Are you sure you want to delete this list item')) self.parentElement.remove();
+      }
+      else alert('There should be at least 1 option');
+    }
+    function addOptionListItem(self) {
+      let newItem = document.createElement('div');
+      newItem.innerHTML = '<input type="text" class="optionListItem"> <button class="deleteOptionListItem redButton" onclick="deleteOptionListItem(this)">Delete</button> ';
+      self.parentElement.parentElement.querySelector('.optionListItems').appendChild(newItem);
+    }
+    function requiredCheck(self){
+      innerSVG = self.querySelector('svg');
+      if (innerSVG.getAttribute('checked')=='true') innerSVG.removeAttribute('checked');
+      else innerSVG.setAttribute('checked','true');
+    }
+
+
+    function saveForm(){
+      let formData = document.querySelectorAll('.formEditor .elementWrapper');
+      if(formData.length<1){
+        alert('Please add at least one element to the form');
+        return;
+      }
+      let formJSON = [];
+
+      formData.forEach((element)=>{
+        var elementJSON = {};
+        elementJSON['type'] = element.querySelector('.fieldType').value;
+        elementJSON['name'] = element.querySelector('.fieldName').value;
+        elementJSON['label'] = element.querySelector('.fieldLabel').value;
+        elementJSON['classList'] = element.querySelector('.fieldClassList').value;
+        elementJSON['ID'] = element.querySelector('.fieldID').value;
+        sIndex = element.querySelector('.fieldType').selectedIndex;
+        if(sIndex == 1 || sIndex == 2 || sIndex == 3 || sIndex == 4 || sIndex == 5) elementJSON['placeholder'] = element.querySelector('.fieldPlaceholder').value;
+        else if (sIndex == 6 ||sIndex == 7 || sIndex == 8) {
+          elementJSON['options'] = [];
+          (element.querySelectorAll('input.optionListItem')).forEach((option)=>{
+            elementJSON['options'].push(option.value);
+          });
         }
-    </script>
+        if(element.querySelector('.checkboxBlock svg').getAttribute('checked')) elementJSON['required']=true;
+        formJSON.push(elementJSON);
+      });
+      console.log(formJSON);
+    }
+  </script>
 </body>
+
 </html>
