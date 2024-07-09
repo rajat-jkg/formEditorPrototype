@@ -212,7 +212,7 @@
             </select>
           </div>
           <div class="fieldProperty">
-            <input type="text" placeholder="Name*" class="fieldName" />
+            <input type="text" placeholder="Name*" class="fieldName" required>
           </div>
           <div class="fieldProperty">
             <input type="text" placeholder="Label" class="fieldLabel">
@@ -322,15 +322,19 @@
         return;
       }
       let formJSON = [];
-
       formData.forEach((element)=>{
+        sIndex = element.querySelector('.fieldType').selectedIndex;
+        if(sIndex==0) alert('One or more field(s) have invalid field type');
         var elementJSON = {};
         elementJSON['type'] = element.querySelector('.fieldType').value;
+        if(element.querySelector('.fieldName').value.length==0){
+          alert('One or more field(s) have no name');
+          return;
+        }
         elementJSON['name'] = element.querySelector('.fieldName').value;
         elementJSON['label'] = element.querySelector('.fieldLabel').value;
         elementJSON['classList'] = element.querySelector('.fieldClassList').value;
         elementJSON['ID'] = element.querySelector('.fieldID').value;
-        sIndex = element.querySelector('.fieldType').selectedIndex;
         if(sIndex == 1 || sIndex == 2 || sIndex == 3 || sIndex == 4 || sIndex == 5) elementJSON['placeholder'] = element.querySelector('.fieldPlaceholder').value;
         else if (sIndex == 6 ||sIndex == 7 || sIndex == 8) {
           elementJSON['options'] = [];
