@@ -240,7 +240,7 @@
           <button class="Delete" onclick="deleteElement(this)">Delete</button>
           <button class="requiredCheckbox" onclick="requiredCheck(this)">Required
             <div class="checkboxBlock" >
-              <svg fill="#1199ff"  version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="9" height="9" viewBox="0 0 78.369 78.369" xml:space="preserve" stroke="#000000" stroke-width="1.175535"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="3.291498"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704 c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704 C78.477,17.894,78.477,18.586,78.049,19.015z"></path> </g> </g></svg>
+              <svg height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 17.84 17.84" xml:space="preserve" fill="#adddff" stroke="#adddff" stroke-width="1" transform="matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#ff" stroke-width="0.53511"> <g> <path style="fill:#1199ff;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g><g id="SVGRepo_iconCarrier"> <g> <path style="fill:#1199ff;" d="M16.145,2.571c-0.272-0.273-0.718-0.273-0.99,0L6.92,10.804l-4.241-4.27 c-0.272-0.274-0.715-0.274-0.989,0L0.204,8.019c-0.272,0.271-0.272,0.717,0,0.99l6.217,6.258c0.272,0.271,0.715,0.271,0.99,0 L17.63,5.047c0.276-0.273,0.276-0.72,0-0.994L16.145,2.571z"></path> </g> </g></svg>
             </div>
           </button>
         </div>
@@ -322,14 +322,18 @@
         return;
       }
       let formJSON = [];
-      formData.forEach((element)=>{
+      for(let i=0;i<formData.length;i++){
+        let element =formData[i];
         sIndex = element.querySelector('.fieldType').selectedIndex;
-        if(sIndex==0) alert('One or more field(s) have invalid field type');
+        if(sIndex==0){ 
+          alert('One or more field(s) have invalid field type');
+          break;
+        }
         var elementJSON = {};
         elementJSON['type'] = element.querySelector('.fieldType').value;
         if(element.querySelector('.fieldName').value.length==0){
           alert('One or more field(s) have no name');
-          return;
+          break;
         }
         elementJSON['name'] = element.querySelector('.fieldName').value;
         elementJSON['label'] = element.querySelector('.fieldLabel').value;
@@ -344,7 +348,7 @@
         }
         if(element.querySelector('.checkboxBlock svg').getAttribute('checked')) elementJSON['required']=true;
         formJSON.push(elementJSON);
-      });
+      };
       console.log(formJSON);
     }
   </script>
