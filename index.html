@@ -5,7 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Form Editor</title>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/css/css.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
   <style>
     html,
     body {
@@ -116,7 +120,7 @@
       border: 1px solid rgb(0, 22, 220);
       border-radius: 5px;
       outline: none;
-      background-color: rgb(112, 112, 112);
+      background-color: rgb(0, 0, 0);
       color: white;
       cursor: pointer;
       padding: 3px 7px;
@@ -170,6 +174,8 @@
     .requiredCheckbox .checkboxBlock{
       display: inline;
     }
+
+   
     .requiredCheckbox svg{
       opacity: 0;
       width: 0;
@@ -183,9 +189,51 @@
       opacity: 1;
       transform: scaleX(1) rotate(0);
     }
+    .CodeMirror{
+      height: auto;
+      border: 1px solid #666;
+      margin-bottom: 10px;
+    }
 
+    .toggleButton{
+      cursor: pointer;
+      width: 28px;
+      height: 17px;
+      background-color: #c6e7ff;
+      border: 1px solid #006ec3;
+      border-radius: 25px;
+      padding: 1px;
+      display: inline-block;
+    }
 
-    
+    .toggleButton[checked='true']{
+      background-color: #3eabff;
+      border: 1px solid #005799;
+      border-radius: 25px;
+    }
+
+    .toggleButton .toggleInner{
+      width: 17px;
+      height: 17px;
+      border-radius: 13px;
+      background-color: rgb(0, 117, 133);
+      position: relative;
+      transition: 300ms;
+      top: 0;
+      left: 0;
+    }
+
+    .toggleButton[checked='true'] .toggleInner{
+      transform: translateX(11px);
+    }
+    code[class*=language-], pre[class*=language-]{
+      font-family: monospace;
+      font-size: 13px;
+    }
+    pre[class*=language-]{
+      padding: 5px;
+      border: 1px solid #666;
+    }
   </style>
 </head>
 
@@ -193,8 +241,21 @@
   <section class="formEditorContainer">
     <div class="editorHeader">
       <h2>Form Name</h2>
+      <div class="customCSSToggle">Enable Custom CSS 
+        <div class="toggleButton" checked="false" onclick="cssToggle(this)"><div class="toggleInner"></div></div></div>
+      
     </div>
-    <div class="customCSS"></div>
+    <div class="customCSS" >
+      <div class="codeEditor">
+        <textarea name="customCSS" id="customCSSEditor"></textarea>
+        <button class="blackButton" onclick="saveCustomCSS()">Save</button>
+      </div>
+      <div class="savedCSS">
+        <pre><code class="language-css"></code></pre>
+        <button class="blackButton" onclick="editCustomCSS()">Edit</button>
+      </div>
+
+    </div>
     <div class="formEditor">
       <div class="elementWrapper">
         <div class="editorElement">
@@ -350,6 +411,42 @@
         formJSON.push(elementJSON);
       };
       console.log(formJSON);
+    }
+  </script>
+
+
+  <script async>
+//toggle and css
+    var customCSS = '';
+    document.querySelector('.savedCSS').style.display = 'none'; 
+    var CSSEditor = CodeMirror.fromTextArea(document.getElementById("customCSSEditor"), {
+        mode: "css",
+        lineNumbers: true,
+    });
+    document.querySelector('.customCSS').style.display = 'none';
+    function cssToggle(self){
+      if(self.getAttribute('checked')=='true'){
+        self.setAttribute('checked','false');
+        document.querySelector('.customCSS').style.display = 'none';
+      }
+      else if(self.getAttribute('checked')=='false') {
+        self.setAttribute('checked','true');
+        document.querySelector('.customCSS').style.display = 'block';
+      }
+    }
+
+    function editCustomCSS(){
+      document.querySelector('.codeEditor').style.display = 'block';
+      document.querySelector('.savedCSS').style.display = 'none';
+      CSSEditor.setValue(customCSS);
+    }
+
+    function saveCustomCSS(){
+      document.querySelector('.codeEditor').style.display = 'none';
+      document.querySelector('.savedCSS').style.display = 'block';
+      customCSS = CSSEditor.getValue();
+      document.querySelector('.savedCSS .language-css').innerHTML= customCSS;
+      Prism.highlightElement(document.querySelector('.savedCSS .language-css'));
     }
   </script>
 </body>
