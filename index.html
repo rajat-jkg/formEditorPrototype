@@ -298,7 +298,7 @@
             <div><input type="text" class="optionListItem"> <button class="deleteOptionListItem redButton"
                 onclick="deleteOptionListItem(this)">Delete</button> </div>
           </div>
-          <button class="addOptionListItem blackButton" onclick="addOptionListItem(this)">Add</button>
+          <button class="addOptionListItem blackButton" onclick="addOptionListItem(this.parentElement.parentElement)">Add</button>
         </div>
         <div class="elementButtonContainer">
           <button class="Duplicate" onclick="duplicateElement(this)">Duplicate</button>
@@ -317,7 +317,7 @@
     </div>
   </section>
   <script async>
-    var formElementHTML = document.querySelector('.elementWrapper').innerHTML;
+    var fieldElementHTML = document.querySelector('.elementWrapper').innerHTML;
     function deleteElement(self) {
       if (confirm('The form element will be deleted')) {
         self.parentElement.parentElement.remove();
@@ -356,7 +356,7 @@
       newElement.classList.add('elementWrapper');
       newElement.style.transform = 'scaleY(0)';
       newElement.style.opacity = '0';
-      newElement.innerHTML = formElementHTML;
+      newElement.innerHTML = fieldElementHTML;
       document.querySelector('.formEditor').appendChild(newElement);
       setTimeout(() => {
         newElement.style = '';
@@ -371,7 +371,8 @@
     function addOptionListItem(self) {
       let newItem = document.createElement('div');
       newItem.innerHTML = '<input type="text" class="optionListItem"> <button class="deleteOptionListItem redButton" onclick="deleteOptionListItem(this)">Delete</button> ';
-      self.parentElement.parentElement.querySelector('.optionListItems').appendChild(newItem);
+      self.querySelector('.optionListItems').appendChild(newItem);
+      return newItem;
     }
     function requiredCheck(self){
       innerSVG = self.querySelector('svg');
@@ -382,6 +383,7 @@
 
     function saveForm(){
       let formData = document.querySelectorAll('.formEditor .elementWrapper');
+      customCSS = CSSEditor.getValue()
       if(formData.length<1){
         alert('Please add at least one element to the form');
         return;
@@ -414,7 +416,10 @@
         if(element.querySelector('.checkboxBlock svg').getAttribute('checked')) elementJSON['required']=true;
         formJSON.push(elementJSON);
       };
+      window.localStorage.setItem('formCustomCSS', customCSS);
+      window.localStorage.setItem('formSchema', JSON.stringify(formJSON));
       console.log(formJSON, customCSS);
+      alert('form details saved')
     }
   </script>
 
@@ -438,15 +443,44 @@
         document.querySelector('.customCSS').style.display = 'block';
       }
     }
-
-
-
-    function saveCustomCSS(){
-      customCSS = CSSEditor.getValue();
-      window.localStorage.setItem('customcss',customCSS);
-      alert('CSS saved locally');
-      console.log(localStorage.customcss);
-    }
   </script>
+
+
+<script>
+  window.addEventListener('load', ()=>{
+    let css = window.localStorage.getItem('formCustomCSS')
+    let schema = JSON.parse(window.localStorage.getItem('formSchema'))
+    if(css.length>0){
+      document.querySelector('.toggleButton').setAttribute('checked', 'true');
+      document.querySelector('.customCSS').style.display = 'block';
+      CSSEditor.setValue(css);
+    }
+    if(schema.length>0){
+      let formEditorContainer = document.querySelector('.formEditor');
+      formEditorContainer.innerHTML = '';
+      schema.forEach((fieldElement)=>{
+        let formField = document.createElement('div');
+        formField.classList.add('elementWrapper');
+        formField.innerHTML = fieldElementHTML;
+        formField.querySelector('select').value = fieldElement['type'];
+        selectType(formField.querySelector('select'));
+        formField.querySelector('input.fieldName').value = fieldElement['name'];
+        formField.querySelector('input.fieldLabel').value = fieldElement['label'];
+        formField.querySelector('input.fieldClassList').value = fieldElement['classList'];
+        formField.querySelector('input.fieldID').value = fieldElement['ID'];
+        formField.querySelector('input.fieldPlaceholder').value = fieldElement['placeholder'];
+        if(fieldElement['options']){
+          let optionListContainer = formField.querySelector('.optionListContainer')
+          optionListContainer.querySelector('.optionListItems').innerHTML = '';
+          optionListContainer.style.display = 'block';
+          fieldElement['options'].forEach((option)=>{
+            addOptionListItem(optionListContainer).querySelector('input').value = option;
+          });
+        }
+        formEditorContainer.appendChild(formField);        
+      })
+    }
+  });
+</script>
 </body>
 </html>
