@@ -383,7 +383,7 @@
 
     function saveForm(){
       let formData = document.querySelectorAll('.formEditor .elementWrapper');
-      customCSS = CSSEditor.getValue()
+      if(cssToggle.getAttribute('checked')=='true') customCSS = CSSEditor.getValue();
       if(formData.length<1){
         alert('Please add at least one element to the form');
         return;
@@ -394,13 +394,13 @@
         sIndex = element.querySelector('.fieldType').selectedIndex;
         if(sIndex==0){ 
           alert('One or more field(s) have invalid field type');
-          break;
+          return;
         }
         var elementJSON = {};
         elementJSON['type'] = element.querySelector('.fieldType').value;
         if(element.querySelector('.fieldName').value.length==0){
           alert('One or more field(s) have no name');
-          break;
+          return;
         }
         elementJSON['name'] = element.querySelector('.fieldName').value;
         elementJSON['label'] = element.querySelector('.fieldLabel').value;
