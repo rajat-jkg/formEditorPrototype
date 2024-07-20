@@ -477,6 +477,7 @@
             addOptionListItem(optionListContainer).querySelector('input').value = option;
           });
         }
+        if(fieldElement['required']==true) formField.querySelector('.requiredCheckbox svg').setAttribute('checked', 'true');
         formEditorContainer.appendChild(formField);        
       })
     }
